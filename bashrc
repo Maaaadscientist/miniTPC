@@ -1,0 +1,12 @@
+export NEXOTOP=/cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/gcc49.sh
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/Python/2.7.3/bashrc
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/Boost/1.68.0/bashrc
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/Cmake/3.13.4/bashrc
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/Xercesc/3.2.2/bashrc
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/gsl/2.5/bashrc
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/ROOT/6.16.00/bashrc
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/ROOT/6.16.00/bin/thisroot.sh
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/Geant4/10.05.p01/bashrc
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/ExternalLibs/vgm/4.4/bashrc
+source /cvmfs/exo.ihep.ac.cn/sl7_amd64_gcc49_py2/sniper_install/setup.sh
