@@ -1,0 +1,96 @@
+#ifndef nEXOTPCVesselConstructor_h
+#define nEXOTPCVesselConstructor_h 1
+
+#include "G4SystemOfUnits.hh"
+#include "G4Box.hh"
+#include "G4Tubs.hh"
+#include "G4Cons.hh"
+#include "G4Sphere.hh"
+#include "G4Torus.hh"
+#include "G4LogicalVolume.hh"
+#include "G4PVPlacement.hh"
+#include "G4VisAttributes.hh"
+#include "G4Colour.hh"
+#include "G4OpticalSurface.hh"
+#include "G4LogicalBorderSurface.hh"
+
+#include "nEXOComponentConstructor.hh"
+
+class nEXOTPCVesselModelConstructor;
+
+/// Constructor of the TPC vessel of the nEXO detector.
+class nEXOTPCVesselConstructor : public nEXOComponentConstructor
+{
+public:
+  nEXOTPCVesselConstructor(G4String name, nEXODetectorConstruction* construct) : nEXOComponentConstructor(name,construct){Init();};
+  nEXOTPCVesselConstructor(G4String name, nEXOConstructor* construct) : nEXOComponentConstructor(name,construct){Init();};
+  virtual ~nEXOTPCVesselConstructor();
+
+  /// Get the (logic) TPC vessel
+  virtual G4LogicalVolume* GetPiece(void);
+  /// Get the filling shape (usually for LXe)
+  virtual G4VSolid* GetFillingShape(void);
+  
+  /// Set the TPC vessel model
+  void SetModel(G4String model) {fModel = model;}
+  /// Get the name of the TPC vessel model
+  const char* GetModelName(void) {return fModel.data();}
+
+  /// Get inner length (available for placement on internal components)
+  virtual double GetInnerLength();
+  /// Get inner radius top (available for placement on internal components)
+  virtual double GetInnerTopRadius();
+  /// Get inner radius bottom (available for placement on internal components)
+  virtual double GetInnerBottomRadius();
+
+  /// Set the optical surface of the TPC vessel
+  void SetOpticalSurface(G4String volName);
+  
+private:
+  void Init(void);   
+  void InitModels(void);
+
+  /// The name of the TPC vessel model
+  G4String fModel;
+
+  /// Constructors of the TPC vessel models
+  std::map<G4String, nEXOTPCVesselModelConstructor*> fTPCVesselModelConstructor;
+  
+};
+
+class nEXOTPCVesselMessenger : public nEXOComponentConstructorMessenger
+{
+private:
+  nEXOTPCVesselConstructor *fConstructor;
+
+  G4UIcmdWithAString* fTPCVesselModelCmd;
+
+public:
+  nEXOTPCVesselMessenger(nEXOTPCVesselConstructor* construct)
+    : nEXOComponentConstructorMessenger(construct, "Control the geometry of the TPC vessel."),
+      fConstructor(construct){
+
+    fTPCVesselModelCmd = new G4UIcmdWithAString(CommandName("tpcVesselModel"),this);
+    fTPCVesselModelCmd->SetGuidance("Define tpc vessel geometry model");
+    fTPCVesselModelCmd->SetParameterName("tpcVesselModel",false);
+    fTPCVesselModelCmd->SetDefaultValue(construct->GetModelName());    
+    fTPCVesselModelCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+  };
+
+  ~nEXOTPCVesselMessenger(){
+    delete fTPCVesselModelCmd;
+  };
+  
+  void SetNewValue(G4UIcommand* cmd, G4String val){
+    if( cmd == fTPCVesselModelCmd ) {
+      fConstructor->SetModel(val);
+    }   
+    else {
+      nEXOComponentConstructorMessenger::SetNewValue(cmd,val);
+    }
+  };
+
+};
+
+#endif
+

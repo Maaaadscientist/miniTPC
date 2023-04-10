@@ -1,0 +1,26 @@
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/nEXO/TPCInternals/wwDistance 6 mm
+/nEXO/TPCInternals/fieldRingRef 0.8
+/nEXO/TPCInternals/cathodeRef 0.8
+/nEXO/TPCInternals/bulgeRef 0.8
+/nEXO/TPCInternals/anodeRef 0.5
+/nEXO/TPCInternals/fieldRingLength 1.5 mm
+/nEXO/TPCInternals/fieldRingThick 1.5 mm
+/nEXO/TPCInternals/ringArrangeID 2
+/generator/setGenerator gps
+/run/initialize
+/analysis/setOutputROOTFileName /nfs/slac/g/exo_data4/users/caogf/sTPC/photonCollection/run-VesselRefCuIndex-SiPMComplexR-SiO2RIIndex2-RingRef0.8-CathodeRef0.8-AnodeRef0.5-Thick1.5-Length1.5-Pitch6-0.root
+/analysis/setOutputROOTTreeName tree
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+/gps/pos/centre 0 0 0 cm
+/gps/pos/halfz 10. cm
+/gps/pos/radius 10. cm
+/gps/pos/confine /nEXO/TPCInternals/sTPCLXe
+/gps/ang/type iso
+/gps/energy 6.966292135 eV
+/gps/particle opticalphoton
+/run/beamOn 1000000

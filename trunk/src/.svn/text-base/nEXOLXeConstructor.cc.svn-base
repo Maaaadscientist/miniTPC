@@ -1,0 +1,114 @@
+#include "nEXOLXeConstructor.hh"
+#include "G4UnionSolid.hh"
+
+nEXOLXeConstructor::~nEXOLXeConstructor(){;}
+
+void nEXOLXeConstructor::Init(void)
+{
+  SetMessenger(new nEXOLXeMessenger(this));
+  SetMaterial("liquidXe");
+  SetAllActive(); // only option at the moment, set smaller active volume will help reducing the file size
+
+  fTPCVessel = 0;
+}
+
+void nEXOLXeConstructor::SetAllActive()
+{
+  fOnlyActiveLXe = true; 
+}
+
+void nEXOLXeConstructor::FillTPCVessel(nEXOTPCVesselConstructor* tpcVessel)
+{
+  fTPCVessel = tpcVessel;
+}
+
+G4LogicalVolume* nEXOLXeConstructor::GetPiece(void)
+{
+  // Build full LXe volume and its active region (potential disk space saver)
+
+  // Full LXe construction based on given TPC vessel
+  
+  G4cout << "//################################################//" << G4endl;
+  G4cout << "//################### Liquid Xe ##################//" << G4endl;
+  G4cout << "//################################################//" << G4endl;
+
+  if(!fTPCVessel)
+  {
+    G4cout << "No TPC vessel is defined to build LXe! No default! Will exit..." << G4endl;
+    exit(1);
+  }
+    
+  G4VSolid* lXeShape = fTPCVessel->GetFillingShape();
+  lXeShape->SetName(GetName()); 
+  
+  G4LogicalVolume* logicLXe = new G4LogicalVolume(lXeShape,FindMaterial(GetMaterial()),GetName());
+
+  // Active LXe construction: same of full (currently only option) or given shape (to be implemented)
+
+  G4cout << "//################################################//" << G4endl;
+  G4cout << "//############### Active Liquid Xe ###############//" << G4endl;
+  G4cout << "//################################################//" << G4endl;
+  
+  G4String activeLXeName = GetName() + "/ActiveRegion";
+
+  G4VSolid* activeLXeShape = 0;
+  if(fOnlyActiveLXe)
+    activeLXeShape = fTPCVessel->GetFillingShape();
+
+  if(!activeLXeShape)
+  {
+    G4cout << "Must define size of active LXe! Default is full LXe volume..." << G4endl;
+    activeLXeShape = fTPCVessel->GetFillingShape();
+  }
+  activeLXeShape->SetName(activeLXeName); 
+
+  G4LogicalVolume* logicActiveLXe = new G4LogicalVolume(activeLXeShape,FindMaterial(GetMaterial()),activeLXeName);
+
+  // Add physical component of active LXe into LXe
+                                                        
+  G4VPhysicalVolume* physActiveLXe = new G4PVPlacement(0,
+                                                       G4ThreeVector(),
+                                                       logicActiveLXe,
+                                                       activeLXeName,
+                                                       logicLXe,
+                                                       false,
+                                                       0,
+                                                       fCheckOverlaps);
+  
+  nEXOSimplePhysVolManager::GetInstance()->AddPhysicalVolume(activeLXeName, physActiveLXe);   
+
+  //Attributes of the LXe
+  
+  G4VisAttributes* XeAtt = new G4VisAttributes(G4Colour(1.0, 0, 1.0));
+  XeAtt->SetVisibility(true);
+  //XeAtt->SetForceSolid(true);
+  logicLXe->SetVisAttributes(XeAtt);
+  //logicActiveLXe->SetVisAttributes(XeAtt);
+
+  return logicLXe;
+}
+
+
+/*
+  if(fOption == 0 || fOption == 2) {
+    logicLXe = new G4LogicalVolume(new G4Cons(GetName(),
+                                   0, GetRadius1(),
+                                   0, GetRadius2(),
+                                   GetLength()/2.,
+                                   0, 360*deg),
+                                   FindMaterial("liquidXe"),
+                                   GetName());  
+  }
+  
+  if(fOption == 1) {
+    G4Tubs* mainLXe = new G4Tubs("mainLXe", 0, GetRadius2(), GetLength()/2., 0, 360*deg);
+    G4Tubs* lotusLXe1 = new G4Tubs("lotusLXe1", GetRadius2(), GetRadius2()+2.0*cm, 2.5/2*cm, 0, 360*deg);
+    G4Tubs* lotusLXe2 = new G4Tubs("lotusLXe2", 560*mm, GetRadius2()+2.0*cm, 3.5/2*cm, 0, 360*deg);
+    G4UnionSolid* partUnionLXe = new G4UnionSolid("main+lxe1", mainLXe, lotusLXe1, 0, G4ThreeVector(0, 0, -GetLength()/2.+2.5/2*cm));
+    G4UnionSolid* solidLXe = new G4UnionSolid(GetName(), partUnionLXe, lotusLXe2, 0, G4ThreeVector(0, 0, -GetLength()/2.-3.5/2*cm));
+
+    logicLXe = new G4LogicalVolume(solidLXe,
+                                   FindMaterial("liquidXe"),
+                                   GetName());
+  }
+*/

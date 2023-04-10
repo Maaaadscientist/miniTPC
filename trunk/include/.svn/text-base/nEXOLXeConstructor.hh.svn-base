@@ -1,0 +1,62 @@
+#ifndef nEXOLXeConstructor_h
+#define nEXOLXeConstructor_h 1
+
+#include "G4LogicalVolume.hh"
+#include "G4SystemOfUnits.hh"
+
+#include "nEXOComponentConstructor.hh"
+#include "nEXOTPCVesselConstructor.hh"
+
+/// Construct the region of active LXe of the nEXO detector.
+class nEXOLXeConstructor : public nEXOComponentConstructor
+{
+public:
+  nEXOLXeConstructor(G4String name, nEXODetectorConstruction* construct) : nEXOComponentConstructor(name,construct){Init();};
+  nEXOLXeConstructor(G4String name, nEXOConstructor* construct) : nEXOComponentConstructor(name,construct){Init();};
+  virtual ~nEXOLXeConstructor();
+
+  virtual G4LogicalVolume* GetPiece(void);
+
+  /// Set the TPC vessel for purposes of LXe dimensions
+  void FillTPCVessel(nEXOTPCVesselConstructor* tpcVessel);
+
+  /// Get the filled TPC vessel
+  nEXOTPCVesselConstructor* GetTPCVessel(){return fTPCVessel;}
+
+  /// Set only active LXe
+  void SetAllActive();
+
+  /// Set dimensions for active LXe
+  //void SetActiveLXeShape(G4VSolid* shape);
+  
+private:
+  void Init(void);
+
+  /// TPC vessel to be filled with this LXe
+  nEXOTPCVesselConstructor* fTPCVessel;
+  
+  /// Flag only active LXe
+  bool fOnlyActiveLXe;
+
+};
+
+class nEXOLXeMessenger : public nEXOComponentConstructorMessenger
+{
+private:
+  nEXOLXeConstructor *fConstructor;
+
+public:
+  nEXOLXeMessenger(nEXOLXeConstructor* construct)
+    : nEXOComponentConstructorMessenger(construct, "Control the LXe in the TPC vessel of the nEXO detector."),
+      fConstructor(construct){
+  };
+
+  ~nEXOLXeMessenger(){};
+  
+  void SetNewValue(G4UIcommand* cmd, G4String val){
+    nEXOComponentConstructorMessenger::SetNewValue(cmd,val);
+  };
+
+};
+
+#endif

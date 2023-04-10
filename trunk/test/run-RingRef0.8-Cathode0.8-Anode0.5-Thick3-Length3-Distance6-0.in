@@ -1,0 +1,26 @@
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/nEXO/TPCInternals/wwDistance 6 mm
+/nEXO/TPCInternals/fieldRingRef 0.8
+/nEXO/TPCInternals/cathodeRef 0.8
+/nEXO/TPCInternals/bulgeRef 0.8
+/nEXO/TPCInternals/anodeRef 0.5
+/nEXO/TPCInternals/fieldRingLength 3 mm
+/nEXO/TPCInternals/fieldRingThick 3 mm
+/nEXO/TPCInternals/ringArrangeID 2
+/generator/setGenerator gps
+/run/initialize
+/analysis/setOutputROOTFileName /junofs/users/guanyuduo/nEXO_MC_Lvpin/trunk/test/test.root
+/analysis/setOutputROOTTreeName tree
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+/gps/pos/centre 0 0 0 cm
+/gps/pos/halfz 10. cm
+/gps/pos/radius 10. cm
+/gps/pos/confine /nEXO/TPCInternals/sTPCLXe
+/gps/ang/type iso
+/gps/energy 6.966292135 eV
+/gps/particle opticalphoton
+/run/beamOn 100
