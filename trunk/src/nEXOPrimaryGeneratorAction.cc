@@ -45,7 +45,13 @@ nEXOPrimaryGeneratorAction::nEXOPrimaryGeneratorAction()
   //fParticleGun1->SetParticleEnergy(6.966292135*eV);
   fParticleGun1->SetParticleEnergy(2.615*MeV);
 
-  fParticleGun2 = new G4GeneralParticleSource();
+  fParticleGun2 = new G4GeneralParticleSource();//Radiation source generators not yet
+  fParticleGun2->SetParticleDefinition(G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
+  fParticleGun2->SetParticleEnergy(2.615*MeV);
+  fParticleGun2->SetParticleTime(0.0*ns);
+  fParticleGun2->SetParticlePosition(G4ThreeVector(0, 0, 0));
+  fParticleGun2->SetParticleMomentumDirection(G4ThreeVector(0,0,1));
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
