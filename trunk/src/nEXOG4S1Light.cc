@@ -114,7 +114,11 @@ nEXOG4S1Light::PostStepDoIt(const G4Track& aTrack, const G4Step& aStep)
 	if ( !YieldFactor ) //set YF=0 when you want S1Light off in your sim
           return G4VRestDiscreteProcess::PostStepDoIt(aTrack, aStep);
 	
-	if( aTrack.GetParentID() == 0 && aTrack.GetCurrentStepNumber() == 1 ) {
+    G4Track *thisTrack = aStep.GetTrack();
+    G4VPhysicalVolume* nextVolume=thisTrack->GetNextVolume();
+    if(nextVolume==NULL) return G4VRestDiscreteProcess::PostStepDoIt(aTrack, aStep);//If next volume not exist do nothing
+	
+    if( aTrack.GetParentID() == 0 && aTrack.GetCurrentStepNumber() == 1 ) {
 	  fExcitedNucleus = false; //an initialization or reset
 	  fVeryHighEnergy = false; //initializes or (later) resets this
 	  fAlpha = false; //ditto
