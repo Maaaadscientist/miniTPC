@@ -6,7 +6,8 @@
 
 #include "G4UImanager.hh"
 
-#include "nEXODetectorConstruction.hh"
+//#include "nEXODetectorConstruction.hh"
+#include "miniTPCDetectorConstruction.hh"
 
 #ifdef G4_V10
 #include "nEXOPhysicsList.hh"
@@ -100,7 +101,7 @@ int main(int argc,char** argv)
   // Set mandatory initialization classes
   //
   // Detector construction
-  runManager-> SetUserInitialization(new nEXODetectorConstruction());
+  runManager-> SetUserInitialization(new miniTPCDetectorConstruction());
 
   // Physics list
   if (physListMacro == "")
