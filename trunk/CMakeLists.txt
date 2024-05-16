@@ -1,13 +1,15 @@
 #----------------------------------------------------------------------------
 # Setup the project
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(nEXO)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #----------------------------------------------------------------------------
 # Compilar flags
-#if(CMAKE_COMPILER_IS_GNUCXX)
-#  set(CMAKE_CXX_FLAGS "-O2")
-#endif()
+if(CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "-O2")
+endif()
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -15,17 +17,25 @@ project(nEXO)
 # to build a batch mode only executable
 #
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
+  #find_package(Geant4 10.5 REQUIRED ui_all vis_all)
+# Find Geant4 package
+# Find Geant4 package
+# Ensure CMake uses the environment's CMAKE_PREFIX_PATH to locate Geant4
+list(APPEND CMAKE_PREFIX_PATH $ENV{G4INSTALL})
+
+add_definitions(-DG4VIS_USE)
+add_definitions(-DG4UI_USE)
+
+option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
 else()
   find_package(Geant4 REQUIRED)
 endif()
 
-#----------------------------------------------------------------------------
-# Setup Geant4 include directories and compile definitions
-# Setup include directory for this project
-#
+# Include Geant4 directories
 include(${Geant4_USE_FILE})
+
 
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project

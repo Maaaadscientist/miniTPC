@@ -11,15 +11,14 @@
 
 #ifdef G4_V10
 #include "nEXOPhysicsList.hh"
-#endif
-
+#else
 #include "EXOPhysicsList.hh"
+#endif
 
 #ifdef G4_V10
 #include "nEXOActionInitialization.hh"
 #else
 #include "nEXOPrimaryGeneratorAction.hh"
-
 #include "nEXORunAction.hh"
 #include "nEXOEventAction.hh"
 #include "nEXOStackingAction.hh"
@@ -48,7 +47,6 @@ namespace {
 int main(int argc,char** argv)
 {
   // Evaluate arguments
-  //
   if ( argc > 9 ) {
     PrintUsage();
     return 1;
@@ -80,11 +78,9 @@ int main(int argc,char** argv)
   }
 
   // Choose the Random engine
-  //
   G4Random::setTheEngine(new CLHEP::RanecuEngine);
 
   // Construct the default run manager
-  //
 #ifdef G4MULTITHREADED
   G4MTRunManager * runManager = new G4MTRunManager;
   if ( nThreads > 0 ) runManager->SetNumberOfThreads(nThreads);
@@ -99,9 +95,8 @@ int main(int argc,char** argv)
   G4cout << "Seed = " << G4Random::getTheSeed() << G4endl;
 
   // Set mandatory initialization classes
-  //
   // Detector construction
-  runManager-> SetUserInitialization(new miniTPCDetectorConstruction());
+  runManager->SetUserInitialization(new miniTPCDetectorConstruction());
 
   // Physics list
   if (physListMacro == "")
@@ -115,7 +110,6 @@ int main(int argc,char** argv)
   // User action initialization
   runManager->SetUserInitialization(new nEXOActionInitialization());
 #else
-
   // Set Mandatory User Action Classes
   runManager->SetUserAction(new nEXOPrimaryGeneratorAction());
   runManager->SetUserAction(new nEXORunAction()); 
@@ -126,35 +120,28 @@ int main(int argc,char** argv)
 #endif
 
   // Initialize G4 kernel
-  //
-// runManager->Initialize();
+  runManager->Initialize();
 
 #ifdef G4VIS_USE
   // Initialize visualization
-  //
   G4VisManager* visManager = new G4VisExecutive;
-  // G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
-  // G4VisManager* visManager = new G4VisExecutive("Quiet");
   visManager->Initialize();
 #endif
 
   // Get the pointer to the User Interface manager
-  //
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
 
   if ( macro.size() ) {
      // Batch mode
      G4String command = "/control/execute ";
-     UImanager->ApplyCommand(command+macro);
+     UImanager->ApplyCommand(command + macro);
   }
   else // Define UI session for interactive mode
   {
 #ifdef G4UI_USE
-     G4UIExecutive * ui = new G4UIExecutive(argc,argv,session);
+     G4UIExecutive * ui = new G4UIExecutive(argc, argv, session);
 #ifdef G4VIS_USE
      UImanager->ApplyCommand("/control/execute vis.mac");
-#else
-     UImanager->ApplyCommand("/control/execute nEXO.in");
 #endif
      if (ui->IsGUI())
         UImanager->ApplyCommand("/control/execute gui.mac");
@@ -176,4 +163,3 @@ int main(int argc,char** argv)
   return 0;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
