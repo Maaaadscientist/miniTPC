@@ -1,0 +1,23 @@
+/run/initialize
+#/vis/open OGL
+/vis/open HepRepFile
+
+#/vis/open DAWNFILE
+#/vis/drawVolume
+#/vis/viewer/flush
+
+/vis/viewer/set/viewpointThetaPhi 90 0  # Adjusted angles for a more detailed view
+/vis/viewer/zoom 3.0  # Further zoom in for a detailed view
+/vis/drawVolume
+/vis/viewer/set/style wireframe
+#/vis/scene/add/trajectories smooth
+#/vis/scene/add/hits
+#/vis/scene/add/axes 0 0 0 0.5 m
+#/vis/scene/endOfEventAction accumulate
+/vis/viewer/flush
+#/vis/rayTracer/trace
+/vis/ogl/printEPS
+/vis/ogl/set/printMode 
+/vis/ogl/set/transparency
+/vis/viewer/set/hiddenEdge 1
+#/vis/viewsr/set/hiddenMarker 1
