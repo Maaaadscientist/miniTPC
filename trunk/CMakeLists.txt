@@ -76,32 +76,32 @@ endif()
 # build nEXO. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(nEXO_SCRIPTS
-  nEXO.in
-  SimulationScripts
-  SimulationExamples
-  )
-
-foreach(_script ${nEXO_SCRIPTS})
-  if(NOT IS_DIRECTORY  ${PROJECT_SOURCE_DIR}/${_script})
-      configure_file(
-      ${PROJECT_SOURCE_DIR}/${_script}
-      ${PROJECT_BINARY_DIR}/${_script}
-      COPYONLY
-      )
-  else(NOT IS_DIRECTORY  ${PROJECT_SOURCE_DIR}/${_script})
-      file(GLOB templateFiles RELATIVE ${PROJECT_SOURCE_DIR}/${_script} ${PROJECT_SOURCE_DIR}/${_script}/*)
-      foreach(templateFile ${templateFiles})
-          if(NOT IS_DIRECTORY  ${PROJECT_SOURCE_DIR}/${_script}/${templateFile})
-              configure_file(
-              ${PROJECT_SOURCE_DIR}/${_script}/${templateFile}
-              ${PROJECT_BINARY_DIR}/${_script}/${templateFile}
-              COPYONLY
-              )
-          endif(NOT IS_DIRECTORY   ${PROJECT_SOURCE_DIR}/${_script}/${templateFile})
-      endforeach(templateFile)
-  endif(NOT IS_DIRECTORY   ${PROJECT_SOURCE_DIR}/${_script})
-endforeach()
+#set(nEXO_SCRIPTS
+#  nEXO.in
+#  SimulationScripts
+#  SimulationExamples
+#  )
+#
+#foreach(_script ${nEXO_SCRIPTS})
+#  if(NOT IS_DIRECTORY  ${PROJECT_SOURCE_DIR}/${_script})
+#      configure_file(
+#      ${PROJECT_SOURCE_DIR}/${_script}
+#      ${PROJECT_BINARY_DIR}/${_script}
+#      COPYONLY
+#      )
+#  else(NOT IS_DIRECTORY  ${PROJECT_SOURCE_DIR}/${_script})
+#      file(GLOB templateFiles RELATIVE ${PROJECT_SOURCE_DIR}/${_script} ${PROJECT_SOURCE_DIR}/${_script}/*)
+#      foreach(templateFile ${templateFiles})
+#          if(NOT IS_DIRECTORY  ${PROJECT_SOURCE_DIR}/${_script}/${templateFile})
+#              configure_file(
+#              ${PROJECT_SOURCE_DIR}/${_script}/${templateFile}
+#              ${PROJECT_BINARY_DIR}/${_script}/${templateFile}
+#              COPYONLY
+#              )
+#          endif(NOT IS_DIRECTORY   ${PROJECT_SOURCE_DIR}/${_script}/${templateFile})
+#      endforeach(templateFile)
+#  endif(NOT IS_DIRECTORY   ${PROJECT_SOURCE_DIR}/${_script})
+#endforeach()
 
 
 
